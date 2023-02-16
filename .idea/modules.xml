@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/api-doormate/api-doormate.iml" filepath="$PROJECT_DIR$/api-doormate/api-doormate.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/door-mate.iml" filepath="$PROJECT_DIR$/.idea/door-mate.iml" />
       <module fileurl="file://$PROJECT_DIR$/doormate/doormate.iml" filepath="$PROJECT_DIR$/doormate/doormate.iml" />
     </modules>
