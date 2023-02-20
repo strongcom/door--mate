@@ -1,8 +1,8 @@
 package com.doormate.controller;
 
 import com.doormate.crypto.AES256Cipher;
-import com.doormate.repository.payload.request.LoginRequest;
-import com.doormate.repository.payload.response.TokenResponse;
+import com.doormate.security.jwt.payload.request.LoginRequest;
+import com.doormate.security.jwt.payload.response.TokenResponse;
 import com.doormate.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

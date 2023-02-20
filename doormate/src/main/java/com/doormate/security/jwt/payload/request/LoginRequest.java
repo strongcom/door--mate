@@ -1,4 +1,4 @@
-package com.doormate.repository.payload.request;
+package com.doormate.security.jwt.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,17 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenRequest {
+public class LoginRequest {
 
     @NotNull
-    private String accessToken;
+    @Size(min = 3, max = 50)
+    private String username;
 
     @NotNull
-    private String refreshToken;
-
+    @Size
+    private String password;
 }

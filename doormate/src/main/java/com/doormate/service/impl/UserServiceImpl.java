@@ -5,6 +5,8 @@ import com.doormate.domain.User;
 import com.doormate.dto.UserDto;
 import com.doormate.repository.UserRepository;
 import com.doormate.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,13 +18,12 @@ import java.util.Collections;
 
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     @Override
@@ -30,6 +31,7 @@ public class UserServiceImpl implements UserService {
         if(userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
             throw new RuntimeException("이미 가입되어 있는 사용자 입니다.");
         }
+
 
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(user);
     }
+
 
 
 

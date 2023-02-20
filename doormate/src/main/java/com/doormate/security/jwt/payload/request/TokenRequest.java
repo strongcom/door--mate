@@ -1,21 +1,22 @@
-package com.doormate.repository.payload.response;
+package com.doormate.security.jwt.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.Authentication;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenResponse {
+public class TokenRequest {
 
+    @NotNull
     private String accessToken;
 
+    @NotNull
     private String refreshToken;
-
-    private Authentication authentication;
 
 }

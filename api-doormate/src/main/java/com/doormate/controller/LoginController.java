@@ -5,6 +5,7 @@ import com.doormate.security.jwt.payload.request.LoginRequest;
 import com.doormate.security.jwt.payload.response.TokenResponse;
 import com.doormate.util.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +24,15 @@ import javax.validation.Valid;
 import java.util.HashMap;
 
 @RestController
+@RequiredArgsConstructor
 public class LoginController {
 
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    @Autowired
-    private CookieUtil cookieUtil;
+    private final CookieUtil cookieUtil;
 
 
     @Value("${jwt.user-cookie-name}")
@@ -144,6 +144,6 @@ public class LoginController {
         httpServletResponse.addCookie(accessTokenCookie);
         httpServletResponse.addCookie(refreshTokenCookie);
 
-        return new ResponseEntity<>("로그아웃 되었습니다.", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

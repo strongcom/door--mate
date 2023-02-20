@@ -1,7 +1,7 @@
 package com.doormate.service;
 
-import com.doormate.repository.payload.request.LoginRequest;
-import com.doormate.repository.payload.response.TokenResponse;
+import com.doormate.security.jwt.payload.request.LoginRequest;
+import com.doormate.security.jwt.payload.response.TokenResponse;
 import org.springframework.security.authentication.BadCredentialsException;
 
 /**
@@ -58,7 +58,7 @@ public interface AuthService {
     public boolean validateRefreshToken(String refreshToken);
 
     /**
-     * 토큰 만료시 h2db, Redis에 저장된 토큰 정보 삭제 처리
+     * 토큰 만료시 mysqldb, Redis에 저장된 토큰 정보 삭제 처리
      *
      * @param username 로그인 사용자
      */

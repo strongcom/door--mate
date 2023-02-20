@@ -60,7 +60,7 @@ public class TokenProvider implements InitializingBean {
 
         Calendar c = Calendar.getInstance();
 
-        // AccessToken 만료시간 30분 설정
+        // AccessToken 만료시간 설정
         c.add(Calendar.MINUTE, 2);
         Date validity = c.getTime();
 
