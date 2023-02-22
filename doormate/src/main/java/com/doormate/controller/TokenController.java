@@ -4,6 +4,7 @@ import com.doormate.crypto.AES256Cipher;
 import com.doormate.security.jwt.payload.request.LoginRequest;
 import com.doormate.security.jwt.payload.response.TokenResponse;
 import com.doormate.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/token")
+@RequiredArgsConstructor
 public class TokenController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
 
     /**
      * 토큰 발급
