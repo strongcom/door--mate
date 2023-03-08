@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import org.springframework.web.client.RestTemplate;
@@ -36,6 +33,22 @@ public class UserController {
 
         //API 호출
         ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:10001/user/register", request , UserDto.class);
+
+
+        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<UserDto> deleteUser(HttpServletRequest httpServletRequest
+            , HttpServletResponse httpServletResponse
+            , @Valid @RequestBody UserDto userDto) throws Exception {
+
+        //HttpEntity 생성
+        HttpEntity<UserDto> request = new HttpEntity<>(userDto);
+
+        //API 호출
+        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:10001/user/withdraw", request , UserDto.class);
 
 
         return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);

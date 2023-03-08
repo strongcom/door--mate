@@ -6,4 +6,5 @@ import com.doormate.dto.UserDto;
 public interface UserService {
 
     public User createUser(UserDto userDto);
+
 }
