@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Configuration
-public class RepetitionDate {
+public class RepetitionDateHandler {
 
     private final AlarmRepository alarmRepository;
     private final ReminderRepository reminderRepository;
