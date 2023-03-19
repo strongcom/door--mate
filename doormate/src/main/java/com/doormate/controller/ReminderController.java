@@ -17,6 +17,10 @@ import java.util.List;
 public class ReminderController {
     private final ReminderService reminderService;
     private final AlarmService alarmService;
+    private static final String CREATE_REMINDER_MESSAGE = "리마인더 등록 완료";
+    private static final String UPDATE_REMINDER_MESSAGE = "알람 수정 완료";
+    private static final String DELETE_REMINDER_MESSAGE = "리마인더 삭제 완료";
+
 
     @PostMapping
     @ResponseBody
@@ -33,7 +37,7 @@ public class ReminderController {
         Long savedReminder = reminderService.updateReminder(id, reminderDto);
         alarmService.deleteAlarm(id);
         alarmService.saveAlarm(savedReminder);
-        return new Message("알람 수정 완료");
+        return UPDATE_REMINDER_MESSAGE;
     }
 
     @DeleteMapping("/{id}")
