@@ -1,15 +1,15 @@
 package com.doormate.controller;
 
-
-import com.doormate.domain.User;
 import com.doormate.dto.UserDto;
-import com.doormate.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -17,13 +17,38 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
+    private final RestTemplate restTemplate;
 
-    @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserDto userDto) {
-        userService.createUser(userDto);
 
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+    @PostMapping("/add")
+    public ResponseEntity<UserDto> createUser(HttpServletRequest httpServletRequest
+            , HttpServletResponse httpServletResponse
+            , @Valid @RequestBody UserDto userDto) throws Exception {
+
+        //HttpEntity 생성
+        HttpEntity<UserDto> request = new HttpEntity<>(userDto);
+
+        //API 호출
+        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:10001/user/register", request , UserDto.class);
+
+
+        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<UserDto> deleteUser(HttpServletRequest httpServletRequest
+            , HttpServletResponse httpServletResponse
+            , @Valid @RequestBody UserDto userDto) throws Exception {
+
+        //HttpEntity 생성
+        HttpEntity<UserDto> request = new HttpEntity<>(userDto);
+
+        //API 호출
+        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:10001/user/withdraw", request , UserDto.class);
+
+
+        return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
+
+    }
 }

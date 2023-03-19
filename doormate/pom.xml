@@ -175,12 +175,6 @@
 			<version>1.10</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.doormate</groupId>
-			<artifactId>api-doormate</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<!-- 은미-->
 		<dependency>

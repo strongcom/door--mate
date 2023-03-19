@@ -2,18 +2,17 @@ package com.doormate.controller;
 
 import com.doormate.crypto.AES256Cipher;
 import com.doormate.security.jwt.payload.request.LoginRequest;
+import com.doormate.security.jwt.payload.response.AccessTokenResponse;
 import com.doormate.security.jwt.payload.response.TokenResponse;
 import com.doormate.util.CookieUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -61,7 +60,7 @@ public class LoginController {
      * @param httpServletRequest HttpServletRequest
      * @param httpServletResponse HttpServletResponse
      * @param loginRequest set username and password
-     * @return TokenResponse accessToken
+     * @return AccessTokenResponse accessToken
      * @throws Exception
      */
     @PostMapping("/signin")
@@ -96,8 +95,7 @@ public class LoginController {
             refreshToken = (String) responseEntity.getBody().get("refreshToken");
 
             // User 쿠키 설정
-            // Token 쿠키가 다 삭제되는 경우 h2db, Redis 서버에 존재하는 토큰 정보를 삭제 처리를 위해서
-            // username 을 설정한다.
+            // Token 쿠키가 다 삭제되는 경우 db, Redis 서버에 존재하는 토큰 정보를 삭제 처리를 위해서 username 을 설정한다.
             // 단 토큰 삭제 처리 후 User 쿠키도 삭제 처리 해야 한다.
             userCookie = cookieUtil.createCookie(userCookieName, AES256Cipher.encrypt(loginRequest.getUsername()), "");
 
@@ -116,7 +114,7 @@ public class LoginController {
             logger.debug("======================================================================================================================");
         }
 
-        return new ResponseEntity<>(new TokenResponse(accessToken), HttpStatus.OK);
+        return new ResponseEntity<>(new AccessTokenResponse(accessToken), HttpStatus.OK);
     }
 
     /**

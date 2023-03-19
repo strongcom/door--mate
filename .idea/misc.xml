@@ -5,7 +5,6 @@
       <list>
         <option value="$PROJECT_DIR$/doormate/pom.xml" />
         <option value="$PROJECT_DIR$/authDoormate/pom.xml" />
-        <option value="$PROJECT_DIR$/api-doormate/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
