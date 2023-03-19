@@ -23,37 +23,33 @@ public class ReminderController {
 
 
     @PostMapping
-    @ResponseBody
-    public Message create(@RequestBody ReminderDto reminderRequestDto) {
+    public String create(@RequestBody ReminderDto reminderRequestDto) {
         Long savedReminderId = reminderService.saveReminder(reminderRequestDto);
-        Message message = alarmService.saveAlarm(savedReminderId);
-        return message;
+        alarmService.saveAlarm(savedReminderId);
+        return CREATE_REMINDER_MESSAGE;
     }
 
 
     @PutMapping("/{id}")
-    @ResponseBody
-    public Message update(@PathVariable Long id, @RequestBody ReminderDto reminderDto) {
+    public String update(@PathVariable Long id, @RequestBody ReminderDto reminderDto) {
         Long savedReminder = reminderService.updateReminder(id, reminderDto);
         alarmService.deleteAlarm(id);
         alarmService.saveAlarm(savedReminder);
         return UPDATE_REMINDER_MESSAGE;
     }
 
-    @DeleteMapping("/{id}")
-    public Message delete(@PathVariable(name = "id") Long id) {
-        Message message = reminderService.deleteReminder(id);
-        return message;
+    @DeleteMapping()
+    public String delete(@RequestParam Long id) {
+        reminderService.deleteReminder(id);
+        return DELETE_REMINDER_MESSAGE;
     }
 
-    @GetMapping("/individual")
-    @ResponseBody
-    public List<Reminder> findDay() {
+    @GetMapping("/today")
+    public List<Reminder> findToday() {
         return alarmService.findTodayAlarm();
     }
 
     @GetMapping()
-    @ResponseBody
     public List<Reminder> findAll() {
         return reminderService.findAllReminder();
     }
