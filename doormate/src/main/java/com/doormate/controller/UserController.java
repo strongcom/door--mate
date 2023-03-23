@@ -29,7 +29,7 @@ public class UserController {
         HttpEntity<UserDto> request = new HttpEntity<>(userDto);
 
         //API 호출
-        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:10001/user/register", request , UserDto.class);
+        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:8080/user/register", request , UserDto.class);
 
 
         return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
@@ -45,7 +45,7 @@ public class UserController {
         HttpEntity<UserDto> request = new HttpEntity<>(userDto);
 
         //API 호출
-        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:10001/user/withdraw", request , UserDto.class);
+        ResponseEntity<UserDto> responseEntity = restTemplate.postForEntity( "http://localhost:8080/user/withdraw", request , UserDto.class);
 
 
         return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);

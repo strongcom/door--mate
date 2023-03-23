@@ -197,7 +197,7 @@ public class JwtFilter extends OncePerRequestFilter {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> request = new HttpEntity<>(refreshToken, headers);
-        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity( "http://localhost:10001/token/validate/refresh-token", request , Boolean.class);
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity( "http://localhost:8080/token/validate/refresh-token", request , Boolean.class);
 
         return responseEntity.getBody();
     }
@@ -223,7 +223,7 @@ public class JwtFilter extends OncePerRequestFilter {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> request = new HttpEntity<>(refreshToken, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity( "http://localhost:10001/token/re-issue/access-token", request , String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity( "http://localhost:8080/token/re-issue/access-token", request , String.class);
 
         return responseEntity.getBody();
     }
@@ -240,7 +240,7 @@ public class JwtFilter extends OncePerRequestFilter {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> request = new HttpEntity<>(accessToken, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity( "http://localhost:10001/token/re-issue/refresh-token", request , String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity( "http://localhost:8080/token/re-issue/refresh-token", request , String.class);
 
         refreshToken = responseEntity.getBody();
 
@@ -259,7 +259,7 @@ public class JwtFilter extends OncePerRequestFilter {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> request = new HttpEntity<>(username, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity( "http://localhost:10001/token/remove/refresh-token", request , String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity( "http://localhost:8080/token/remove/refresh-token", request , String.class);
 
         refreshToken = responseEntity.getBody();
     }

@@ -79,7 +79,7 @@ public class LoginController {
 
         HttpEntity<String> request = new HttpEntity<>(mapper.writeValueAsString(loginRequest), headers);
 
-        ResponseEntity<HashMap> responseEntity = restTemplate.postForEntity( "http://localhost:10001/token/issue", request , HashMap.class );
+        ResponseEntity<HashMap> responseEntity = restTemplate.postForEntity( "http://localhost:8080/token/issue", request , HashMap.class );
 
 
         // 토큰 발행 요청 결과
