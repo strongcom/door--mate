@@ -1,3 +1,4 @@
-# Project exclude paths
-/api-doormate/target/
-/doormate/target/
+*.iml
+.idea
+application.properties
+firebase_service_key.json
