@@ -11,8 +11,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="api-doormate" target="11" />
-      <module name="door-mate" target="11" />
       <module name="doormate" target="11" />
     </bytecodeTargetLevel>
   </component>
