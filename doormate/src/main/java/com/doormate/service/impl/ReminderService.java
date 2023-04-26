@@ -1,8 +1,9 @@
 package com.doormate.service.impl;
 
-import com.doormate.domain.Message;
+import com.doormate.domain.Alarm;
 import com.doormate.domain.Reminder;
 import com.doormate.dto.ReminderDto;
+import com.doormate.exception.NotFoundException;
 import com.doormate.repository.AlarmRepository;
 import com.doormate.repository.ReminderRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,13 @@ public class ReminderService {
 
     private static final String SAVE_REMINDER_SUCCESS_MESSAGE = "리마인더 등록 완료";
     private static final String UPDATE_SUCCESS_MESSAGE = "리마인더 수정 완료";
-    private static final String ERROR_NOT_EXISTS_REMINDER_MESSAGE = "해당 리마인더가 존재하지 않습니다.";
+    private static final String ERROR_NOT_EXISTS_REMINDER_MESSAGE = "등록된 리마인더가 존재하지 않습니다.";
     private static final String NOT_CORRECT_DATE_MESSAGE = "설정한 날짜의 범위를 다시 확인하세요.";
     private static final String DELETE_SUCCESS_MESSAGE = "리마인더 삭제 완료";
 
     @Transactional
     public Long saveReminder(ReminderDto reminderDto) {
+
         Reminder reminder = reminderDto.toReminder(reminderDto);
         Reminder savedReminder = reminderRepository.save(reminder);
         return savedReminder.getReminderId();
@@ -53,10 +55,16 @@ public class ReminderService {
     }
 
     @Transactional
-    public String deleteReminder(Long id) {
+    public void deleteReminder(Long id) {
         // 무결성 위반 방지를 위해 자식 테이블 값 삭제 후, 리마인더 삭제
         alarmRepository.deleteAllByReminderReminderId(id);
         reminderRepository.deleteById(id);
-        return DELETE_SUCCESS_MESSAGE;
+    }
+
+    // 해당 리마인더의 알림 목록
+    public List<Alarm> findReminderByAlarm(Long reminderId) {
+        Reminder reminder = reminderRepository.findById(reminderId)
+                .orElseThrow(() -> new NotFoundException(ERROR_NOT_EXISTS_REMINDER_MESSAGE));
+        return reminder.getAlarmList();
     }
 }
