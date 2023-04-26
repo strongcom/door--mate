@@ -8,6 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -16,7 +18,7 @@ import java.time.LocalTime;
 public class Reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reminderId;
+    private Long reminderId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -45,6 +47,9 @@ public class Reminder {
     private RepetitionPeriod repetitionPeriod;
 
     private String repetitionDay;
+
+    @OneToMany(mappedBy = "alarmId")
+    private List<Alarm> alarmList = new ArrayList<>();
 
     @Builder
     public Reminder(String title, String content, String subTitle,
