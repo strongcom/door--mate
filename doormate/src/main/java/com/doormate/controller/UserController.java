@@ -16,7 +16,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
     private final RestTemplate restTemplate;
 
 
@@ -51,4 +50,6 @@ public class UserController {
         return new ResponseEntity<>(responseEntity.getBody(), HttpStatus.OK);
 
     }
+
+
 }
