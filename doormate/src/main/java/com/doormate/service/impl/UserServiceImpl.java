@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .nickname(userDto.getNickname())
+                .targetToken(userDto.getTargetToken())
                 .authorities(Collections.singleton(authority))
                 .build();
 
