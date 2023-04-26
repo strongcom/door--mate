@@ -15,8 +15,7 @@ public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "alarm_id")
-    private Long id;
+    private Long alarmId;
 
     @ManyToOne
     @JoinColumn(name = "reminder_id")
