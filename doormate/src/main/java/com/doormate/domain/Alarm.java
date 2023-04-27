@@ -48,7 +48,7 @@ public class Alarm {
     }
     @Builder
     public Alarm(Reminder reminder, LocalDate noticeDate, LocalTime startTime, LocalTime endTime) {
-        this.reminder = reminder;
+        setReminder(reminder);
         this.noticeDate = noticeDate;
         this.startTime = startTime;
         this.endTime = endTime;
