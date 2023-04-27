@@ -82,7 +82,7 @@ public class FirebaseCloudMessageService {
 
     public List<Long> showAlarm(AlarmDto alarmDto) {
         // 해당 유저 아이디 값이 들어온 것을 확인
-        User user = userRepository.findById(alarmDto.getUserId()).orElseThrow(() -> new NotFoundException(NOT_FIND_USER_MESSAGE));
+        User user = userRepository.findByUsername(alarmDto.getUserName()).orElseThrow(() -> new NotFoundException(NOT_FIND_USER_MESSAGE));
         List<Alarm> alarmList = alarmRepository.findAllByUser(user);  // 현관문을 나간 사용자의 알람 리스트 전체 조회
         List<Long> reminderList = new ArrayList<>();
 
