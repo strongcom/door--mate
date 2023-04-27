@@ -1,9 +1,6 @@
 package com.doormate.config;
 
-import com.doormate.jwt.JwtAccessDeniedHandler;
-import com.doormate.jwt.JwtAuthenticationEntryPoint;
-import com.doormate.jwt.JwtSecurityConfig;
-import com.doormate.jwt.JwtUtil;
+import com.doormate.jwt.*;
 import com.doormate.util.CookieUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,8 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -31,19 +30,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-   // private final LoginAuthenticationFilter loginAuthenticationFilter; //로그인해야만 리마인더 기능 사용 가능 인증 필터 (custom filter)
+    private final LoginAuthenticationFilter loginAuthenticationFilter; //로그인해야만 리마인더 기능 사용 가능 인증 필터 (custom filter)
 
-    //private final TokenAuthenticationProvider tokenAuthenticationProvider;
+    private final TokenAuthenticationProvider tokenAuthenticationProvider;
 
 
     public SecurityConfig(JwtUtil jwtUtil, RestTemplate restTemplate, CookieUtil cookieUtil, CorsFilter corsFilter,
-                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
+                          JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler, LoginAuthenticationFilter loginAuthenticationFilter, TokenAuthenticationProvider tokenAuthenticationProvider) {
         this.jwtUtil = jwtUtil;
         this.restTemplate = restTemplate;
         this.cookieUtil = cookieUtil;
         this.corsFilter = corsFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
+        this.loginAuthenticationFilter = loginAuthenticationFilter;
+        this.tokenAuthenticationProvider = tokenAuthenticationProvider;
+
     }
 
     @Bean
@@ -59,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         , "/favicon.ico"
                 );
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -96,8 +99,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .apply(new JwtSecurityConfig(jwtUtil, restTemplate, cookieUtil));
-
-       // http.addFilterBefore(loginAuthenticationFilter,  UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(loginAuthenticationFilter,  UsernamePasswordAuthenticationFilter.class);
     }
 }
 
