@@ -1,12 +1,12 @@
 package com.doormate.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import com.doormate.domain.Message;
 import com.doormate.domain.Reminder;
 import com.doormate.dto.ReminderDto;
 import com.doormate.service.impl.AlarmService;
 import com.doormate.service.impl.ReminderService;
+import com.doormate.service.impl.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/reminder")
 @RequiredArgsConstructor
 public class ReminderController {
+    private final UserServiceImpl userService;
     private final ReminderService reminderService;
     private final AlarmService alarmService;
     private static final String CREATE_REMINDER_MESSAGE = "리마인더 등록 완료";
@@ -53,4 +54,6 @@ public class ReminderController {
     public List<Reminder> findAll() {
         return reminderService.findAllReminder();
     }
+
+
 }

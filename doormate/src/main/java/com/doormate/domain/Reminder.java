@@ -22,7 +22,7 @@ public class Reminder {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User userId;
+    private User user;
 
     @Column(nullable = false)
     private String title;
@@ -51,11 +51,23 @@ public class Reminder {
     @OneToMany(mappedBy = "alarmId")
     private List<Alarm> alarmList = new ArrayList<>();
 
+    /**
+     * 연관관계 메서드
+     */
+    public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getReminderList().remove(this);
+        }
+        this.user = user;
+        user.getReminderList().add(this);
+    }
+
     @Builder
-    public Reminder(String title, String content, String subTitle,
+    public Reminder(User user, String title, String content, String subTitle,
                     LocalTime startTime, LocalTime endTime,
                     LocalDate startDate, LocalDate endDate,
                     RepetitionPeriod repetitionPeriod, String repetitionDay) {
+        setUser(user);
         this.title = title;
         this.content = content;
         this.subTitle = subTitle;

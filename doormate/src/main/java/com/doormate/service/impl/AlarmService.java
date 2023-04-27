@@ -1,12 +1,12 @@
 package com.doormate.service.impl;
 
 import com.doormate.domain.Alarm;
-import com.doormate.domain.Message;
 import com.doormate.domain.Reminder;
 import com.doormate.domain.RepetitionPeriod;
 import com.doormate.exception.NotFoundException;
 import com.doormate.repository.AlarmRepository;
 import com.doormate.repository.ReminderRepository;
+import com.doormate.repository.UserRepository;
 import com.doormate.util.RepetitionDateHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
+    private final UserRepository userRepository;
     private final ReminderRepository reminderRepository;
     private final AlarmRepository alarmRepository;
     private final RepetitionDateHandler repetitionDateHandler;
 
+    private static final String NOT_FIND_USER_MESSAGE = "해당 회원의 알람 리스트가 존재하지 않습니다.";
     private static final String NOT_FIND_REMINDER_MESSAGE = "해당 리마인더가 존재하지 않습니다.";
     private static final String SUCCESS_SAVED_ALARM_MESSAGE = "반복 설정 등록 완료";
 
