@@ -17,6 +17,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class ReminderDto {
 
+    private Long userId;
     private String title;
 
     private String content;
@@ -34,7 +35,8 @@ public class ReminderDto {
 
     private String repetitionDay;   // 반복 주기(요일별)
 
-    public ReminderDto(String title, String content, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+    public ReminderDto(Long userId, String title, String content, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
         this.startDate = startDate;
