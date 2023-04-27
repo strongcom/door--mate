@@ -1,9 +1,7 @@
 package com.doormate.service.impl;
 
-import com.doormate.domain.Alarm;
 import com.doormate.domain.Reminder;
 import com.doormate.dto.ReminderDto;
-import com.doormate.exception.NotFoundException;
 import com.doormate.repository.AlarmRepository;
 import com.doormate.repository.ReminderRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,17 +52,12 @@ public class ReminderService {
         return reminder.getReminderId();
     }
 
+
+    // 리펙터링 필수!! -> 연관관계 메서드 활용하기
     @Transactional
     public void deleteReminder(Long id) {
-        // 무결성 위반 방지를 위해 자식 테이블 값 삭제 후, 리마인더 삭제
         alarmRepository.deleteAllByReminderReminderId(id);
         reminderRepository.deleteById(id);
     }
 
-    // 해당 리마인더의 알림 목록
-    public List<Alarm> findReminderByAlarm(Long reminderId) {
-        Reminder reminder = reminderRepository.findById(reminderId)
-                .orElseThrow(() -> new NotFoundException(ERROR_NOT_EXISTS_REMINDER_MESSAGE));
-        return reminder.getAlarmList();
-    }
 }
