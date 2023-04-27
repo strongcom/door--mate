@@ -5,6 +5,8 @@ import lombok.*;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -45,10 +47,11 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
 
-    @OneToMany
-    private List<Reminder> reminder;
+    @OneToMany(mappedBy = "reminderId", cascade = CascadeType.ALL, orphanRemoval = true)  // 고아객체가 되었을 경우, 자식 엔티티 자동 삭제
+    private List<Reminder> reminderList = new ArrayList<>();
 
     @Column(name = "target_token", length = 200)
     private String targetToken;
+
 
 }

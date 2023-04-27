@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -19,4 +20,8 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
     @Query("select alarm from Alarm alarm where alarm.noticeDate = :noticeDate")
     List<Alarm> findAllByNoticeDate(LocalDate noticeDate);
+
+    List<Alarm> findAllByNoticeDateAndStartTimeGreaterThanEqualAndEndTimeLessThanEqual(LocalDate today,
+                                                                                       LocalTime nowTime1,
+                                                                                       LocalTime nowTime2);
 }
