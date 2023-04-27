@@ -16,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.CorsFilter;
 
@@ -29,6 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+   // private final LoginAuthenticationFilter loginAuthenticationFilter; //로그인해야만 리마인더 기능 사용 가능 인증 필터 (custom filter)
+
+    //private final TokenAuthenticationProvider tokenAuthenticationProvider;
+
 
     public SecurityConfig(JwtUtil jwtUtil, RestTemplate restTemplate, CookieUtil cookieUtil, CorsFilter corsFilter,
                           JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) {
@@ -90,6 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .apply(new JwtSecurityConfig(jwtUtil, restTemplate, cookieUtil));
+
+       // http.addFilterBefore(loginAuthenticationFilter,  UsernamePasswordAuthenticationFilter.class);
     }
 }
 
