@@ -59,6 +59,7 @@ public class AuthServiceImpl implements AuthService {
             authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("[" + loginRequest.getUsername() + "] 사용자 정보가 존재하지 않습니다.");
+            // BadCredentialsException -> 아이디가 존재하지 않거나, 비밀번호가 틀린 경우 발생
         }
         String accessToken = tokenProvider.createToken(authentication);
         logger.debug("AccessToken({}) 이 정상적으로 발급 되었습니다.", accessToken);
@@ -103,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
         Optional<RefreshToken> token = Optional.ofNullable(refreshTokenRepository.findById(refreshToken)
                 .orElseThrow(() -> new TokenNotFoundException("RefreshToken 이 존재하지 않습니다.")));
 
-        // AccessToken 재밣행
+        // AccessToken 재발행
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(token.get().getUsername(),
                 AES256Cipher.decrypt(token.get().getPassword()));
 
@@ -144,8 +145,6 @@ public class AuthServiceImpl implements AuthService {
             // refreshToken 발급
             Calendar c = Calendar.getInstance();
 
-            // 30일후 설정
-            // c.add(Calendar.DATE, 30);
             c.add(Calendar.MINUTE, 5);
 
             RefreshToken refreshTokenRequest = RefreshToken.builder()
