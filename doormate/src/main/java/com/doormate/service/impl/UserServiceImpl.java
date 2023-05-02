@@ -1,8 +1,10 @@
 package com.doormate.service.impl;
 
 import com.doormate.domain.Authority;
+import com.doormate.domain.Reminder;
 import com.doormate.domain.User;
 import com.doormate.dto.UserDto;
+import com.doormate.exception.NotFoundUserException;
 import com.doormate.repository.UserRepository;
 import com.doormate.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 
 @Service
@@ -41,6 +44,12 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return userRepository.save(user);
+    }
+
+    public List<Reminder> findAll(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundUserException("회원정보가 존재하지 않습니다."));
+        return user.getReminders();
     }
 
 }

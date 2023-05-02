@@ -4,6 +4,7 @@ import com.doormate.domain.Reminder;
 import com.doormate.domain.RepetitionPeriod;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,11 +14,11 @@ import java.time.LocalTime;
 
 
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReminderDto {
 
-    private Long userId;
     private String title;
 
     private String content;
@@ -35,21 +36,12 @@ public class ReminderDto {
 
     private String repetitionDay;   // 반복 주기(요일별)
 
-    public ReminderDto(Long userId, String title, String content, LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-        this.userId = userId;
-        this.title = title;
-        this.content = content;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
+
 
     public Reminder toReminder(ReminderDto reminderDto) {
         return Reminder.builder()
                 .title(this.title)
                 .content(this.content)
-                .subTitle(toSubtitle(reminderDto))
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .startTime(this.startTime)
@@ -57,21 +49,5 @@ public class ReminderDto {
                 .repetitionPeriod(this.repetitionPeriod)
                 .repetitionDay(this.repetitionDay)
                 .build();
-    }
-
-    public String toSubtitle(ReminderDto reminderDto) {
-        String repetition;
-        if (reminderDto.getRepetitionPeriod() == RepetitionPeriod.DAILY) {
-            repetition = "매일";
-        } else if (reminderDto.getRepetitionPeriod() == RepetitionPeriod.WEEKLY) {
-            repetition = "매주 " + repetitionDay;
-        } else if (reminderDto.getRepetitionPeriod() == RepetitionPeriod.MONTHLY) {
-            repetition = "매달";
-        } else if (reminderDto.getRepetitionPeriod() == RepetitionPeriod.YEARLY) {
-            repetition = "매년";
-        } else {
-            repetition = startDate.toString();
-        }
-        return "알람, " + repetition + " " + this.startTime + " - " + this.endTime + " 사이 알림";
     }
 }
