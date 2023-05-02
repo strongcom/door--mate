@@ -1,9 +1,12 @@
 package com.doormate.service.impl;
 
 import com.doormate.domain.Reminder;
+import com.doormate.domain.User;
 import com.doormate.dto.ReminderDto;
-import com.doormate.repository.AlarmRepository;
+import com.doormate.exception.NotFoundReminderException;
+import com.doormate.exception.NotFoundUserException;
 import com.doormate.repository.ReminderRepository;
+import com.doormate.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +18,6 @@ import java.util.List;
 public class ReminderService {
     private final UserRepository userRepository;
     private final ReminderRepository reminderRepository;
-    private final AlarmRepository alarmRepository;
 
     private static final String SAVE_REMINDER_SUCCESS_MESSAGE = "리마인더 등록 완료";
     private static final String UPDATE_SUCCESS_MESSAGE = "리마인더 수정 완료";
@@ -33,33 +35,23 @@ public class ReminderService {
     }
 
     @Transactional
-    public List<Reminder> findAllReminder() {
-        return reminderRepository.findAll();
+    public List<Reminder> findAllReminder(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("해당 유저는 존재하지 않습니다."));
+        return user.getReminders();
     }
 
     @Transactional
-    public Long updateReminder(Long id, ReminderDto reminderDto) {
-        Reminder reminder = reminderRepository.findById(id).orElse(null);
-        // 해당 리마인더 존재 여부 확인
-        reminder.setTitle(reminderDto.getTitle());
-        reminder.setContent(reminderDto.getContent());
-        reminder.setSubTitle(reminderDto.toSubtitle(reminderDto));
-        reminder.setStartDate(reminderDto.getStartDate());
-        reminder.setEndDate(reminderDto.getEndDate());
-        reminder.setStartTime(reminderDto.getStartTime());
-        reminder.setEndTime(reminderDto.getEndTime());
-        reminder.setRepetitionPeriod(reminderDto.getRepetitionPeriod());
-        reminder.setRepetitionDay(reminderDto.getRepetitionDay());
-
+    public Long updateReminder(Long reminderId, ReminderDto reminderDto) {
+        Reminder reminder = reminderRepository.findById(reminderId)
+                .orElseThrow(() -> new NotFoundReminderException("해당 리마인더는 존재하지 않습니다."));
+        reminder.setReminder(reminderDto);
+        //Reminder savedReminder = reminderRepository.save(reminder);
         return reminder.getReminderId();
     }
 
-
-    // 리펙터링 필수!! -> 연관관계 메서드 활용하기
-    @Transactional
-    public void deleteReminder(Long id) {
-        alarmRepository.deleteAllByReminderReminderId(id);
-        reminderRepository.deleteById(id);
+    public void deleteReminder(Long reminderId) {
+        reminderRepository.deleteById(reminderId);
     }
 
 }

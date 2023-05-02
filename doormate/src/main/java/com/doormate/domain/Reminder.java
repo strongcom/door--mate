@@ -119,6 +119,20 @@ public class Reminder {
      * 비즈니스 로직
      */
 
+    public void setReminder(ReminderDto reminderDto) {
+        setUser(this.user);
+        addSubtitle(reminderDto.getRepetitionDay(), reminderDto.getRepetitionPeriod(),
+                reminderDto.getStartTime(), reminderDto.getEndTime());
+        this.title = reminderDto.getTitle();
+        this.content = reminderDto.getContent();
+        this.startTime = reminderDto.getStartTime();
+        this.endTime = reminderDto.getEndTime();
+        this.startDate = reminderDto.getStartDate();
+        this.endDate = reminderDto.getEndDate();
+        this.repetitionPeriod = reminderDto.getRepetitionPeriod();
+        this.repetitionDay = reminderDto.getRepetitionDay();
+    }
+
     // 리마인더 날짜 리스트를 만들어야함 (매일, 매주, 매달, 매년)
     public void addSubtitle(String repetitionDay, RepetitionPeriod repetitionPeriod, LocalTime startTime, LocalTime endTime) {
         String repetition = "";

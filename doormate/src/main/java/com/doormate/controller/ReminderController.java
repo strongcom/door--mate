@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/reminder")
 @RequiredArgsConstructor
 public class ReminderController {
-    private final UserServiceImpl userService;
     private final ReminderService reminderService;
     private final AlarmService alarmService;
     private final UserServiceImpl userService;
@@ -25,35 +24,36 @@ public class ReminderController {
 
 
     @PostMapping("/{id}")
-    public String create(@RequestParam("id") Long id, @RequestBody ReminderDto reminderRequestDto) {
-        Long savedReminderId = reminderService.saveReminder(id, reminderRequestDto);
+    public String create(@PathVariable("id") Long userId, @RequestBody ReminderDto reminderRequestDto) {
+        Long savedReminderId = reminderService.saveReminder(userId, reminderRequestDto);
         alarmService.saveAlarm(savedReminderId);
         return CREATE_REMINDER_MESSAGE;
     }
 
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @RequestBody ReminderDto reminderDto) {
-        Long savedReminder = reminderService.updateReminder(id, reminderDto);
-        alarmService.deleteAlarm(id);
+    public String update(@PathVariable("id") Long reminderId, @RequestBody ReminderDto reminderDto) {
+        Long savedReminder = reminderService.updateReminder(reminderId, reminderDto);
+        alarmService.deleteAlarm(reminderId);
         alarmService.saveAlarm(savedReminder);
         return UPDATE_REMINDER_MESSAGE;
     }
 
-    @DeleteMapping()
-    public String delete(@RequestParam Long id) {
-        reminderService.deleteReminder(id);
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") Long reminderId) {
+        alarmService.deleteAlarm(reminderId);
+        reminderService.deleteReminder(reminderId);
         return DELETE_REMINDER_MESSAGE;
     }
 
-    @GetMapping("/today")
-    public List<Reminder> findToday() {
-        return alarmService.findTodayAlarm();
+    @GetMapping("/today/{id}")
+    public List<Reminder> findToday(@PathVariable("id") Long userId) {
+        return alarmService.findTodayAlarm(userId);
     }
 
-    @GetMapping()
-    public List<Reminder> findAll() {
-        return reminderService.findAllReminder();
+    @GetMapping("/{id}")
+    public List<Reminder> findAll(@PathVariable("id") Long id) {
+        return userService.findAll(id);
     }
 
 

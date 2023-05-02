@@ -42,19 +42,23 @@ public class AlarmService {
     }
 
     @Transactional
-    public void deleteAlarm(Long id) {
-        reminderRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(NOT_FIND_REMINDER_MESSAGE));
-        alarmRepository.deleteAllByReminderReminderId(id);
+    public void deleteAlarm(Long reminder_id) {
+        Reminder reminder = reminderRepository.findById(reminder_id)
+                .orElseThrow(() -> new NotFoundReminderException("해당 리마인더가 존재하지 않습니다."));
+        alarmRepository.deleteAllByReminder(reminder);
     }
 
     @Transactional
-    public List<Reminder> findTodayAlarm() {
-        List<Alarm> todayAlarmList = alarmRepository.findAllByNoticeDate(LocalDate.now());
+    public List<Reminder> findTodayAlarm(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("존재하지 않는 유저입니다."));
+        List<Alarm> todayAlarmList = alarmRepository.findAllToday(LocalDate.now());
         List<Reminder> reminders = new ArrayList<>();
-        for (Alarm alarm : todayAlarmList) {
-            Reminder reminder = alarm.getReminder();
-            reminders.add(reminder);
+        for (Alarm alarm : todayAlarmList
+        ) {
+            if (alarm.getReminder().getUser().equals(user)) {
+                reminders.add(alarm.getReminder());
+            }
         }
         return reminders;
     }
