@@ -1,13 +1,17 @@
 package com.doormate.service.impl;
 
+import com.doormate.domain.Reminder;
 import com.doormate.domain.RepetitionPeriod;
 import com.doormate.dto.ReminderDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @SpringBootTest
 class ReminderServiceTest {
@@ -17,7 +21,7 @@ class ReminderServiceTest {
 
 
     @Test
-    void saveReminder() {
+    void 리마인더저장() {
         // given
         ReminderDto reminderDto = ReminderDto.builder()
                 .title("subtitle test")
@@ -39,7 +43,7 @@ class ReminderServiceTest {
     }
 
     @Test
-    void saveOneReminder() {
+    void 리마인더한개만저장() {
         // given
         ReminderDto reminderDto = ReminderDto.builder()
                 .title("내생일")
@@ -59,7 +63,22 @@ class ReminderServiceTest {
         // then
     }
     @Test
-    void findAllReminder() {
+    @Transactional
+    public void 리마인더_조회() throws Exception {
+        // given
+
+
+        // when
+        List<Reminder> allReminder = reminderService.findAllReminder(1L);
+
+
+        // then
+        for (Reminder reminder : allReminder
+        ) {
+            System.out.println(reminder.getTitle());
+        }
+
+
     }
 
     @Test
@@ -76,11 +95,11 @@ class ReminderServiceTest {
                 .repetitionDay("MON TUE WED")
                 .build();
 
-
-
         // when
-        Long reminderId = reminderService.saveReminder(1L, reminderDto);
+        Long reminder = reminderService.updateReminder(2L, reminderDto);
+
         // then
+        Assertions.assertThat(reminder).isEqualTo(2);
     }
 
     @Test
