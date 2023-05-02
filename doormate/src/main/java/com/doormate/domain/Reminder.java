@@ -47,6 +47,7 @@ public class Reminder {
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private RepetitionPeriod repetitionPeriod;
 
     private String repetitionDay;
