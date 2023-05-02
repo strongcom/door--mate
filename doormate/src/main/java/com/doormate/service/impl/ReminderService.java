@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ReminderService {
+    private final UserRepository userRepository;
     private final ReminderRepository reminderRepository;
     private final AlarmRepository alarmRepository;
 
@@ -23,9 +24,10 @@ public class ReminderService {
     private static final String DELETE_SUCCESS_MESSAGE = "리마인더 삭제 완료";
 
     @Transactional
-    public Long saveReminder(ReminderDto reminderDto) {
-
-        Reminder reminder = reminderDto.toReminder(reminderDto);
+    public Long saveReminder(Long id, ReminderDto reminderDto) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundUserException("가입되지 않은 유저입니다. 회원가입 후 리마인더를 등록해주세요."));
+        Reminder reminder = Reminder.createReminder(user, reminderDto);
         Reminder savedReminder = reminderRepository.save(reminder);
         return savedReminder.getReminderId();
     }
